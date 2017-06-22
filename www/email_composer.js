@@ -1,4 +1,3 @@
-cordova.define("cordova-plugin-email-composer.EmailComposer", function(require, exports, module) {
 /*
     Copyright 2013-2016 appPlant UG
 
@@ -20,9 +19,9 @@ cordova.define("cordova-plugin-email-composer.EmailComposer", function(require, 
     under the License.
 */
 
-var exec      = require('cordova/exec'),
+var exec = require('cordova/exec'),
     isAndroid = navigator.userAgent.toLowerCase().indexOf('android') > -1,
-    mailto    = 'mailto:';
+    mailto = 'mailto:';
 
 /**
  * List of all registered mail app aliases.
@@ -45,14 +44,14 @@ exports.aliases = {
  */
 exports.getDefaults = function () {
     return {
-        app:           mailto,
-        subject:       '',
-        body:          '',
-        to:            [],
-        cc:            [],
-        bcc:           [],
-        attachments:   [],
-        isHtml:        true,
+        app: mailto,
+        subject: '',
+        body: '',
+        to: [],
+        cc: [],
+        bcc: [],
+        attachments: [],
+        isHtml: true,
         chooserHeader: 'Open with'
     };
 };
@@ -69,15 +68,15 @@ exports.getDefaults = function () {
  */
 exports.isAvailable = function (app, callback, scope) {
 
-    if (typeof callback != 'function'){
-        scope    = null;
+    if (typeof callback != 'function') {
+        scope = null;
         callback = app;
-        app      = mailto;
+        app = mailto;
     }
 
     app = app || mailto;
 
-    if (this.aliases.hasOwnProperty(app)){
+    if (this.aliases.hasOwnProperty(app)) {
         app = this.aliases[app];
     }
 
@@ -139,7 +138,7 @@ exports.addAlias = function (alias, package) {
  */
 exports.isServiceAvailable = function () {
     console.log('`email.isServiceAvailable` is deprecated.' +
-                ' Please use `email.isAvailable` instead.');
+        ' Please use `email.isAvailable` instead.');
 
     this.isAvailable.apply(this, arguments);
 };
@@ -183,7 +182,7 @@ exports.mergeWithDefaults = function (options) {
             continue;
         }
 
-        var custom_  = options[key],
+        var custom_ = options[key],
             default_ = defaults[key];
 
         if (custom_ === null || custom_ === undefined) {
@@ -236,11 +235,11 @@ exports.createCallbackFn = function (callbackFn, scope) {
  * Register an Eventlistener on resume-Event to
  * execute callback after open a draft.
  */
-exports.registerCallbackForScheme = function(fn) {
+exports.registerCallbackForScheme = function (fn) {
 
     var callback = function () {
         fn();
-        document.removeEventListener('resume',callback);
+        document.removeEventListener('resume', callback);
     };
 
     document.addEventListener('resume', callback, false);
@@ -254,17 +253,17 @@ exports.registerCallbackForScheme = function(fn) {
 * @param {Object?} scope
 * The callback function's scope
 */
-exports.hasPermission = function(callback, scope) {
+exports.hasPermission = function (callback, scope) {
 
     var fn = this.createCallbackFn(callback, scope);
 
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
+    if (!navigator.userAgent.toLowerCase().includes('android')) {
         fn(true);
         return
     }
 
-    exec(fn, null, 'EmailComposer','hasPermission', []);
- };
+    exec(fn, null, 'EmailComposer', 'hasPermission', []);
+};
 
 /**
 * Request permission if not already granted.
@@ -275,22 +274,17 @@ exports.hasPermission = function(callback, scope) {
 * The callback function's scope
 */
 
-exports.requestPermission = function(callback, scope) {
+exports.requestPermission = function (callback, scope) {
     var fn = this.createCallbackFn(callback, scope)
 
     if (this._checked) {
-        return this.hasPermission (callback, scope);
+        return this.hasPermission(callback, scope);
     }
 
-    if(!navigator.userAgent.toLowerCase().includes('android')) {
-    fn(true);
-    return
-   }
+    if (!navigator.userAgent.toLowerCase().includes('android')) {
+        fn(true);
+        return
+    }
 
-    exec(fn, null, 'EmailComposer','requestPermission', []);
+    exec(fn, null, 'EmailComposer', 'requestPermission', []);
 };
-
-
-
-
-});
