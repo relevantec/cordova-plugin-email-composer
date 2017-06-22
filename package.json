@@ -36,7 +36,7 @@
     },
     {
       "name": "cordova-android",
-      "version": ">=6.2.0"
+      "version": ">=5.0.0"
     },
     {
       "name": "cordova-ios",
